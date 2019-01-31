@@ -1,6 +1,5 @@
 sudo: required
 
-
 dist: xenial
 
 services:
@@ -8,5 +7,5 @@ services:
 
 script:
   - echo "hello"
-  - pip install jq
+  - sudo pip install jq
   - echo '[{"aaa":"bbb"}]' |jq
