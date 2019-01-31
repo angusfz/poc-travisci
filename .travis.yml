@@ -1,7 +1,9 @@
 sudo: required
+language: go
 
 dist: xenial
-
+go:
+  - 1.11.x
 services:
   - docker
 
