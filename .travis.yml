@@ -16,6 +16,6 @@ script:
   - echo $PATH
   - find . -type f
   - find ~/.local/bin -type f
-  - export PATH=~/.local/bin:$PAHT
+  - export PATH=~/.local/bin:$PATH
   - jq --help
   
