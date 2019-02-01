@@ -15,3 +15,5 @@ script:
   - which jq
   - echo $PATH
   - find . -type f
+  - find ~/ -type f
+  
