@@ -19,4 +19,4 @@ script:
   - find ~/.local/bin -type f
   - export PATH=~/.local/bin:$PATH
   - jq --help
-  
+  - python -c "import site; print(site.USER_BASE)"
