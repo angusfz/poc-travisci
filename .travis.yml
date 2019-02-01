@@ -10,7 +10,8 @@ services:
 script:
   - echo "hello"
   - pip install --user jq
-  - echo '[{"aaa":"bbb"}]' |jq
+  - echo '[{"aaa":"bbb"}]' > t.json
+  - cat t.json |jq
   - jq --help
   - which jq
   - echo $PATH
