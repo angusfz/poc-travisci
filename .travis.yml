@@ -9,7 +9,7 @@ services:
 
 script:
   - echo "hello"
-  - pip install --user jq
+  - pip install --verbose --user jq
   - echo '[{"aaa":"bbb"}]' > t.json
   - cat t.json |jq
   - jq --help
