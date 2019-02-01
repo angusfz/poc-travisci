@@ -15,5 +15,7 @@ script:
   - which jq
   - echo $PATH
   - find . -type f
-  - find ~/ -type f
+  - find ~/.local/bin -type f
+  - export PATH=~/.local/bin:$PAHT
+  - jq --help
   
