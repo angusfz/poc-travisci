@@ -9,6 +9,6 @@ services:
 
 script:
   - aws
-  - pip install --verbose --user awscli
+  - pip install -q --user awscli
   - aws 
   - which aws
