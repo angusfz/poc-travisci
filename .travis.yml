@@ -12,3 +12,6 @@ script:
   - pip install --user jq
   - echo '[{"aaa":"bbb"}]' |jq
   - jq --help
+  - which jq
+  - echo $PATH
+  - find . -type f
