@@ -16,7 +16,7 @@ script:
   - which jq
   - echo $PATH
   - find . -type f
-  - find ~/.local/bin -type f
+  - find ~/.local/ -type f
   - export PATH=~/.local/bin:$PATH
   - jq --help
   - python -c "import site; print(site.USER_BASE)"
