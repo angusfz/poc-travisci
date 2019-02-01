@@ -8,15 +8,5 @@ services:
   - docker
 
 script:
-  - echo "hello"
-  - pip install --verbose --user jq
-  - echo '[{"aaa":"bbb"}]' > t.json
-  - cat t.json |jq
-  - jq --help
-  - which jq
-  - echo $PATH
-  - find . -type f
-  - find ~/.local/ -type f
-  - export PATH=~/.local/bin:$PATH
-  - jq --help
-  - python -c "import site; print(site.USER_BASE)"
+  - aws
+  - pip install --verbose--user awscli
