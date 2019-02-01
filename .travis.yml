@@ -11,3 +11,4 @@ script:
   - echo "hello"
   - pip install --user jq
   - echo '[{"aaa":"bbb"}]' |jq
+  - jq --help
