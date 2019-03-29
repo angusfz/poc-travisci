@@ -6,16 +6,11 @@ services:
 - docker
 
 before_install:
-- apt-get update
-- apt-get install python3 python3-pip
-
-script:
+- virtualenv -p /usr/bin/python3 py3env
+- source py3env/bin/activate
 - python -V
-- sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
-- python -V
-- which pip
 - pip -V
-- pip install awscli
+script:
 - echo 7899
 notifications:
   email: false
