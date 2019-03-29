@@ -15,4 +15,5 @@ script:
     fi
 
 notifications:
-  slack: ${SLACK_CHANNEL}
+  email: false
+  slack: $(SLACK_CHANNEL)
