@@ -1,5 +1,7 @@
 dist: xenial
 
+sudo: true
+
 services:
 - docker
 
@@ -9,7 +11,7 @@ before_install:
 
 script:
 - python -V
-- update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+- sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 - python -V
 - echo 7899
 notifications:
