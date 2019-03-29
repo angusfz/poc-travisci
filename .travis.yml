@@ -13,7 +13,9 @@ script:
 - python -V
 - sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 - python -V
+- which pip
 - pip -V
+- pip install awscli
 - echo 7899
 notifications:
   email: false
