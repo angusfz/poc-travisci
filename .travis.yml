@@ -12,7 +12,7 @@ before_install:
 
 script:
 - python -V
-- echo 123
+- echo 7899
 notifications:
   email: false
   slack:
