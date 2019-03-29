@@ -13,6 +13,7 @@ script:
 - python -V
 - sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 - python -V
+- pip -V
 - echo 7899
 notifications:
   email: false
