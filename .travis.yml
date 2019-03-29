@@ -1,20 +1,14 @@
 sudo: required
-
 language: python
-
 dist: xenial
-
 services:
-  - docker
-
+- docker
 script:
-  - echo ${SLACK_CHANNEL}
-  - aws
-  - if [[ 1=1 ]]; then
-      echo 1;
-      echo 2;
-    fi
-
+- echo ${SLACK_CHANNEL}
+- aws
+- if [[ 1=1 ]]; then echo 1; echo 2; fi
 notifications:
   email: false
-  slack: ${SLACK_CHANNEL}
+  slack:
+    rooms:
+      secure: MjlhE3yUvKoV8yrb1eK31czN4K1IoCyXm0dDHG2KlOErWl5S3s+1vyScdQWMRbikRHmIdAFd7TCGAmQUJHCwWv6zM/rVHs5E6poFEmGp0PDEjJ3sSfqZxN8Qf6b2RocxR8IuHg2mBsbyf4bzFnz9r6nKoPtsgIpxwagSMu5r8KeLRzYjlzojGtcD1xqupAppspysInoNS0TkR1AuKbRSf6g5ZI2/lnwzMU2aXmEM3GmC02lnAplXTh8TI1XfSTptDLctt1D2K/nnsb3amA0QZYOxRS42WyjnBgV2Y2QdL3ss6l/rHkMgY+L2LK9zBgQZVPdRb5k2Hy/oCbwJ2E4LKWlLpnUg/1rar3W3IvvK9zRfGiXMwSN30jtIYiBQsleTJxC+H3lAuDHK7qjOoM+S5mhhK9UYCSEJduDdL2aakiZkIRV+I7H8azNsU/Y5xsfcSvCuXMJZ/O2p7H5vLdzCAEQwE7k1aeZlH5dq0IRo2E/LLwImcBGUO1bmYieNZmUcZk9S7eJXDZe+PiILee/1alg7ISsEWl2pjNApzCBTuKKGjVFS4UQg9w7cwzl3m3BNFriLLWbu6fvWmFat4hWO7s/7b+vkcuj2UaBe3r6ROpqhMA63EDlOjvxMmvDVPJNq68aIe1cQP8c940kaw5FcDf0MvoLHdz39IdmSopw9pNE=
