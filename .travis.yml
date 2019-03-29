@@ -3,15 +3,18 @@ dist: xenial
 sudo: true
 
 services:
-- docker
+  - docker
 
 before_install:
-- virtualenv -p /usr/bin/python3 py3env
-- source py3env/bin/activate
-- python -V
-- pip -V
+  - virtualenv -p /usr/bin/python3 py3env
+  - source py3env/bin/activate
+  - python -V 
+  - pip -V
+  - pip install awscli
+
 script:
-- echo 7899
+  - echo 7899
+
 notifications:
   email: false
   slack:
