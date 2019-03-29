@@ -3,7 +3,7 @@ dist: xenial
 services:
 - docker
 script:
-- echo 123456
+- python -V
 notifications:
   email: false
   slack:
