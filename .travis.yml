@@ -1,8 +1,5 @@
 dist: xenial
-language: python
-python:
-  - "3.7"
-  - "3.8-dev"
+
 services:
 - docker
 script:
