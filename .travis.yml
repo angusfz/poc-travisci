@@ -3,14 +3,13 @@ dist: xenial
 services:
 - docker
 
-addons:
-  apit
-
 before_install:
 - sudo apt-get update
 - sudo apt-get install python3
 
 script:
+- python -V
+- update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 - python -V
 - echo 7899
 notifications:
