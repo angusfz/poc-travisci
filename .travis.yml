@@ -1,9 +1,9 @@
 sudo: required
-language: go
+
+language: python
 
 dist: xenial
-go:
-  - 1.11.x
+
 services:
   - docker
 
@@ -13,3 +13,6 @@ script:
       echo 1;
       echo 2;
     fi
+
+notifications:
+  slack: ${SLACK_CHANNEL}
