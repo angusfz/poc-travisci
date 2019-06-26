@@ -1,8 +1,8 @@
 dist: xenial
 #before_install:
 #  - bash test.sh
-install:
-  - bash test.sh
+#install:
+#  - bash test.sh
 script:
   - bash test.sh
 before_deploy:
