@@ -16,7 +16,8 @@ function set_env_var() {
     #   Outputs[].OutputKey==ElasticContainerRegistry
     #   Outputs[].OutputKey==LogGroup
     #   Outputs[].OutputKey==TaskDefinition
-    local outputs=$( aws cloudformation describe-stacks | jq --arg ECS_SERVICE_STACKNAME ${ECS_SERVICE_STACKNAME} -r '.Stacks[] | select(.StackName==$ECS_SERVICE_STACKNAME)|.Outputs[]' )
+    local outputs
+    outputs=$( aws cloudformation describe-stacks | jq --arg ECS_SERVICE_STACKNAME ${ECS_SERVICE_STACKNAME} -r '.Stacks[] | select(.StackName==$ECS_SERVICE_STACKNAME)|.Outputs[]' )
     export ECS_CLUSTER=$( echo $outputs | jq -r '.| select(.OutputKey=="Cluster") | .OutputValue' )
     export ECS_SERVICE=$( echo $outputs | jq -r '.| select(.OutputKey=="Service") | .OutputValue' | awk -F "/" '{print $NF}' )
     export TASK_DEFINITION_EXECUTION_ROLE_ARN=$( echo $outputs | jq -r '.| select(.OutputKey=="ExecutionRole") | .OutputValue' )
@@ -39,7 +40,8 @@ function ecs_register_task_definition() {
     print_function_name
 
     # Register new version task definition
-    local outputs=$(aws ecs register-task-definition \
+    local outputs
+    outputs=$(aws ecs register-task-definition \
         --cli-input-json file://${TASK_DEFINITION_TEMPLATE} \
         --family ${TASK_DEFINITION_FAMILY} \
         --execution-role-arn ${TASK_DEFINITION_EXECUTION_ROLE_ARN} \
@@ -51,7 +53,8 @@ function ecs_update_service() {
     print_function_name
 
     # Update service with new version task definition
-    local outputs=$( aws ecs update-service \
+    local outputs
+    outputs=$( aws ecs update-service \
         --cluster ${ECS_CLUSTER} \
         --service ${ECS_SERVICE} \
         ${TASK_DESIRED_COUNT_CLI} \
@@ -79,10 +82,11 @@ function get_sts(){
         echo "empty AWS_ACCESS_KEY_ID"
         exit 1
     fi
-
-    local sts_session_name=TravisDeploy-$(echo ${TRAVIS_REPO_SLUG} | tr -dc '[:alnum:]\n\r' | cut -b 1-50 )
-    local accountid=$( aws sts get-caller-identity | jq -r .Account )
-    local temp_role=$( aws sts assume-role --role-arn arn:aws:iam::$accountid:role/${ROLE_NAME} --role-session-name $sts_session_name )
+    
+    local sts_session_name accountid temp_role
+    sts_session_name=TravisDeploy-$(echo ${TRAVIS_REPO_SLUG} | tr -dc '[:alnum:]\n\r' | cut -b 1-50 )
+    accountid=$( aws sts get-caller-identity | jq -r .Account )
+    temp_role=$( aws sts assume-role --role-arn arn:aws:iam::$accountid:role/${ROLE_NAME} --role-session-name $sts_session_name )
 
     export AWS_ACCESS_KEY_ID=$( echo $temp_role | jq -r .Credentials.AccessKeyId )
     export AWS_SECRET_ACCESS_KEY=$( echo $temp_role | jq -r .Credentials.SecretAccessKey )
