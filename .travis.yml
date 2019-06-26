@@ -4,9 +4,9 @@ dist: xenial
 #install:
 #  - bash test.sh
 script:
-  - bash test.sh
-before_deploy:
-  - bash test.sh
+  - echo ok
+#before_deploy:
+#  - bash test.sh
 deploy:
   - provider: script
     skip_cleanup: true
