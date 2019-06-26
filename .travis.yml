@@ -1,14 +1,13 @@
-sudo: true
-
+dist: xenial
 before_install:
-  - sudo add-apt-repository ppa:jonathonf/python-3.7 -y
-  - sudo apt-get update
-  - sudo apt-get install python3 python3-pip
-  - virtualenv -p /usr/bin/python3 py3env
-  - source py3env/bin/activate
-  - python -V 
-  - pip -V
-  - pip install awscli
-
+  - bash test.sh
+install:
+  - bash test.sh
 script:
-  - echo ok
+  - bash test.sh
+before_deploy:
+  - bash test.sh
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: bash ${TRAVIS_BUILD_DIR}/test.sh
