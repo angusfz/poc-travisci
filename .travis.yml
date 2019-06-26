@@ -4,7 +4,7 @@ dist: xenial
 #install:
 #  - bash test.sh
 script:
-  - pip install awscli
+  - pip install awscli --user
 #before_deploy:
 #  - bash test.sh
 deploy:
