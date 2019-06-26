@@ -4,7 +4,7 @@ dist: xenial
 #install:
 #  - bash test.sh
 script:
-  - pip install aws-cli
+  - pip install awscli
 #before_deploy:
 #  - bash test.sh
 deploy:
