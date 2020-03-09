@@ -5,7 +5,7 @@ dist: xenial
 #  - bash test.sh
 script:
   - pip install awscli --user
-  - echo 123
+  - echo ${TRAVIS_COMMIT}
 before_deploy:
   - export AWS_ACCESS_KEY_ID=123456
   - export AWS_SECRET_ACCESS_KEY=123456
