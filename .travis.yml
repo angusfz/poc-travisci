@@ -6,7 +6,7 @@ script:
 stages:
   - name: test
   - name: deployment-tag-master
-    if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/
+    if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/ AND branch =~ /master/
 
 jobs:
   include:
@@ -18,5 +18,5 @@ jobs:
       script: env
 
     - stage: deployment-tag-master
-      name: deployment
+      name: Do master tag deployment
       script: echo "master deployment" && env
