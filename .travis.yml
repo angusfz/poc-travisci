@@ -1,7 +1,7 @@
-dist: xenial
+language: node_js
 
 node_js:
-    - "lts/*"
+  - "lts/*"
 
 _default_build: &_default_build
   git:
@@ -22,6 +22,7 @@ _env-lab: &_env-lab
     - AWS_ACCESS_KEY_ID=${DEV_AWS_ACCESS_KEY_ID}
     - AWS_SECRET_ACCESS_KEY=${DEV_AWS_SECRET_ACCESS_KEY}
     - BUILD_ENV=lab
+    - S3_TARGET_BUCKET=
 
 _env-staging: &_env-staging
   env:
@@ -29,6 +30,7 @@ _env-staging: &_env-staging
     - AWS_ACCESS_KEY_ID=${STAGING_AWS_ACCESS_KEY_ID}
     - AWS_SECRET_ACCESS_KEY=${STAGING_AWS_SECRET_ACCESS_KEY}
     - BUILD_ENV=staging
+    - S3_TARGET_BUCKET=
 
 _env-production: &_env-production
   env:
@@ -36,11 +38,39 @@ _env-production: &_env-production
     - AWS_ACCESS_KEY_ID=${PRODUCTION_AWS_ACCESS_KEY_ID}
     - AWS_SECRET_ACCESS_KEY=${PRODUCTION_AWS_SECRET_ACCESS_KEY}
     - BUILD_ENV=production
+    - S3_TARGET_BUCKET=
+
+_s3deployment: &_s3deployment
+  deploy:
+    provider: s3
+    region: ${AWS_DEFAULT_REGION}
+    access_key_id: ${AWS_ACCESS_KEY_ID}
+    secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+    bucket: ${S3_TARGET_BUCKET}
+    cleanup: true
+    local_dir: dist
+    upload-dir: vip25
 
 stages:
   - name: test
-  - name: deployment-tag-master
+
+  - name: tag-lab-deployment
     if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/
+
+  - name: tag-staging-deployment
+    if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-rc$/
+
+  - name: tag-production-deployment
+    if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)$/
+
+  - name: branch-lab-deployment
+    if: branch = lab
+
+  - name: branch-staging-deployment
+    if: branch = staging
+
+  - name: branch-production-deployment
+    if: branch = production
 
 jobs:
   include:
@@ -48,11 +78,40 @@ jobs:
       name: Stage Test
       <<: *_default_build
 
-    - stage: deployment-tag-master
+    # Tag deployment
+    - stage: tag-lab-deployment
       name: Do lab tag deployment
       <<: *_env-lab
       <<: *_default_build
+      <<: *_s3deployment
+  
+    - stage: tag-staging-deployment
+      name: Do staging tag deployment
+      <<: *_env-staging
+      <<: *_default_build
+      <<: *_s3deployment
 
+    - stage: tag-production-deployment
+      name: Do production tag deployment
+      <<: *_env-production
+      <<: *_default_build
+      <<: *_s3deployment
+
+    # Branch deployment
+    - stage: branch-lab-deployment
+      <<: *_env-lab
+      <<: *_default_build
+      <<: *_s3deployment
+
+    - stage: branch-staging-deployment
+      <<: *_env-staging
+      <<: *_default_build
+      <<: *_s3deployment
+
+    - stage: branch-production-deployment
+      <<: *_env-production
+      <<: *_default_build
+      <<: *_s3deployment
 
 
       
