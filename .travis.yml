@@ -19,8 +19,8 @@ jobs:
 
     - stage: deployment-tag-master
       name: Do master tag deployment
-      script: echo "master deployment" && env && echo ${TRAVIS_TAG}
-    - script: echo test
-    - script: echo test
-    - script: echo test
+      script: 
+        - echo "master deployment" && env && echo ${TRAVIS_TAG}
+        - env
+
       
