@@ -1,5 +1,6 @@
 dist: xenial
 script:
+  - echo "Global build"
   - env
 
 stages:
