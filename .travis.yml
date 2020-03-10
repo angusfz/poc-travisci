@@ -12,11 +12,11 @@ jobs:
   include:
 
     - stage: test
-      name: Global Test
+      name: Stage Test
       script: echo "Global test"
-    - name: Global Test env
+    - name: Stage Test env
       script: env
 
     - stage: deployment-tag-master
       name: Do master tag deployment
-      script: echo "master deployment" && env
+      script: echo "master deployment" && env && echo ${TRAVIS_TAG}
