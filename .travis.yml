@@ -6,7 +6,6 @@ script:
 stages:
   - name: test
   - name: deployment-tag-master
-    if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/
 
 jobs:
   include:
@@ -20,3 +19,4 @@ jobs:
     - stage: deployment-tag-master
       name: Do master tag deployment
       script: echo "master deployment" && env && echo ${TRAVIS_TAG}
+      if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/
