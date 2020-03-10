@@ -14,4 +14,4 @@ stages:
 jobs:
   include:
     - stage: deployment-tag-master
-      script: env
+      script: env 
