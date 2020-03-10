@@ -7,30 +7,5 @@ script:
   - env
 
 
-stages:
-  - name: tag-deployment-master
-    if: (tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/) AND (branch = master)
-
-  - name: tag-deployment-lab
-    if: (tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/) AND (branch = lab)
-
-  - name: tag-deployment-staging
-    if: (tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-rc$/) AND (branch = staging)
-
-  - name: tag-deployment-production
-    if: (tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)$/) AND (branch = production)
-
-
-jobs:
-  include:
-    - stage: tag-deployment-lab
-      script: env
-    include:
-    - stage: tag-deployment-staging
-      script: env
-    include:
-    - stage: tag-deployment-production
-      script: env
-
 
 
