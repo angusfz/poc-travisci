@@ -1,30 +1,58 @@
 dist: xenial
-script:
-  - echo "Global build"
-  - env
+
+node_js:
+    - "lts/*"
+
+_default_build: &_default_build
+  git:
+    submodules: false
+
+  before_install:
+    - echo "Phase Before install"
+
+  install:
+    - echo "Phase install"
+
+  script:
+    - echo "Phase script"
+
+_env-lab: &_env-lab
+  env:
+    - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    - AWS_ACCESS_KEY_ID=${DEV_AWS_ACCESS_KEY_ID}
+    - AWS_SECRET_ACCESS_KEY=${DEV_AWS_SECRET_ACCESS_KEY}
+    - BUILD_ENV=lab
+
+_env-staging: &_env-staging
+  env:
+    - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    - AWS_ACCESS_KEY_ID=${STAGING_AWS_ACCESS_KEY_ID}
+    - AWS_SECRET_ACCESS_KEY=${STAGING_AWS_SECRET_ACCESS_KEY}
+    - BUILD_ENV=staging
+
+_env-production: &_env-production
+  env:
+    - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    - AWS_ACCESS_KEY_ID=${PRODUCTION_AWS_ACCESS_KEY_ID}
+    - AWS_SECRET_ACCESS_KEY=${PRODUCTION_AWS_SECRET_ACCESS_KEY}
+    - BUILD_ENV=production
 
 stages:
   - name: test
   - name: deployment-tag-master
     if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/
 
-_defaults: &defaultas
-  env:
-    - DDDD=12312312312312
-
 jobs:
   include:
-
     - stage: test
       name: Stage Test
-      script: echo "Global test"
-    - name: Stage Test env
-      script: env
+      <<: *_default_build
 
     - stage: deployment-tag-master
-      name: Do master tag deployment
-      <<: *defaultas
-      script:
-        - env
+      name: Do lab tag deployment
+      <<: *_env-lab
+      <<: *_default_build
+
+
 
       
