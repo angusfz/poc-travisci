@@ -4,11 +4,17 @@ script:
   - env
 
 stages:
+  - name: test
   - name: deployment-tag-master
     #if: (tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/) AND (branch = master)
     #if: branch = master
 
 jobs:
   include:
+    - stage: test
+      name: Global Test
+      script: echo "Global test"
+    - name: Global Test env
+      script: env
     - stage: deployment-tag-master
       script: env
