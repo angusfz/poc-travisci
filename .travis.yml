@@ -8,8 +8,8 @@ script:
 
 stages:
   - name: deployment-tag-master
-    if: (tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/) AND (branch = master)
-
+    #if: (tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/) AND (branch = master)
+    if: branch = master
 
 jobs:
   include:
