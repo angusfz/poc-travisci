@@ -48,7 +48,7 @@ _s3deployment: &_s3deployment
   #local_dir: dist
   #upload-dir: vip25
   provider: script
-  script: env
+  script: env |sort
 
 stages:
   # Default build
