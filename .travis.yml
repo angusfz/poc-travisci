@@ -12,7 +12,7 @@ _build: &_build
     - echo "Phase install"
 
   script:
-    - echo ${$BUILD_ENV}
+    - echo ${BUILD_ENV}
 
 _env-lab: &_env-lab
   env:
