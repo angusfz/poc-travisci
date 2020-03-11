@@ -1,18 +1,27 @@
 
-_build: &_build
+_build: &_buildaa
   language: node_js
   node_js: "lts/*"
+
+  cache:
+    - yarn
+
   git:
     submodules: false
 
   before_install:
-    - echo "Phase Before install"
+    - sed -i "s/git@github.com:/https:\/\/x-access-token:${GITHUB_ACCESS_TOKEN}@github.com\//g" .gitmodules
+    - git submodule update --init --recursive
+    - yarn
 
   install:
-    - echo "Phase install"
+    - cypress install
 
   script:
-    - echo ${BUILD_ENV}
+    - yarn lint
+    - yarn build:$BUILD_ENV
+    - yarn test:unit
+    # - yarn test:e2e --headless
 
 _env-lab: &_env-lab
   env:
@@ -46,9 +55,13 @@ _s3deployment: &_s3deployment
   #bucket: ${S3_TARGET_BUCKET}
   #cleanup: false
   #local_dir: dist
-  #upload-dir: vip25
+  #upload-dir: vip25d
   provider: script
   script: env |sort
+
+_before_deploy_tag_files: &_before_deploy_tag_files
+  before_deploy:
+    - make copy-file-with-tag
 
 stages:
   # Default build
@@ -65,7 +78,7 @@ stages:
     if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)$/
 
   - name: branch-deployment-lab
-    if: branch = master
+    if: branch = lab
 
   - name: branch-deployment-staging
     if: branch = staging
@@ -85,6 +98,7 @@ jobs:
       name: Deployment
       <<: *_env-lab
       <<: *_build
+      <<: *_before_deploy_tag_files
       deploy:
         <<: *_s3deployment
         on:
@@ -98,3 +112,10 @@ jobs:
       deploy:
         <<: *_s3deployment
         
+notifications:
+  email:
+    on_success: never
+  slack:
+    on_success: never
+    rooms:
+      secure: 104corp:U3sSJiAnHfM5Da3cthMtaoDo
