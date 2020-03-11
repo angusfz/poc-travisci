@@ -1,41 +1,100 @@
-dist: xenial
-#before_install:
-#  - bash test.sh
-#install:
-#  - bash test.sh
-script:
-  - pip install awscli --user
-  - echo ${TRAVIS_COMMIT}
-before_deploy:
-  - export AWS_ACCESS_KEY_ID=123456
-  - export AWS_SECRET_ACCESS_KEY=123456
-  - export AWS_SESSION_TOKEN=123456
 
+_build: &_build
+  language: node_js
+  node_js: "lts/*"
+  git:
+    submodules: false
+
+  before_install:
+    - echo "Phase Before install"
+
+  install:
+    - echo "Phase install"
+
+  script:
+    - echo ${BUILD_ENV}
+
+_env-lab: &_env-lab
+  env:
+    - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    - AWS_ACCESS_KEY_ID=${DEV_AWS_ACCESS_KEY_ID}
+    - AWS_SECRET_ACCESS_KEY=${DEV_AWS_SECRET_ACCESS_KEY}
+    - BUILD_ENV=${DEV_BUILD_ENV}
+    - S3_TARGET_BUCKET=${DEV_S3_TARGET_BUCKET}
+
+_env-staging: &_env-staging
+  env:
+    - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    - AWS_ACCESS_KEY_ID=${STAGING_AWS_ACCESS_KEY_ID}
+    - AWS_SECRET_ACCESS_KEY=${STAGING_AWS_SECRET_ACCESS_KEY}
+    - BUILD_ENV=${STAGING_BUILD_ENV}
+    - S3_TARGET_BUCKET=${STAGING_S3_TARGET_BUCKET}
+
+_env-production: &_env-production
+  env:
+    - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    - AWS_ACCESS_KEY_ID=${PRODUCTION_AWS_ACCESS_KEY_ID}
+    - AWS_SECRET_ACCESS_KEY=${PRODUCTION_AWS_SECRET_ACCESS_KEY}
+    - BUILD_ENV=${PRODUCTION_BUILD_ENV}
+    - S3_TARGET_BUCKET=${PRODUCTION_S3_TARGET_BUCKET}
+
+_s3deployment: &_s3deployment
+  #provider: s3
+  #region: ${AWS_DEFAULT_REGION}
+  #access_key_id: ${AWS_ACCESS_KEY_ID}
+  #secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+  #bucket: ${S3_TARGET_BUCKET}
+  #cleanup: false
+  #local_dir: dist
+  #upload-dir: vip25
+  provider: script
+  script: env |sort
 
 stages:
+  # Default build
+  - name: build-test
+
+  # Condition stage
   - name: tag-deployment-lab
-    if: (tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/) AND (branch = lab)
+    if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/ 
 
   - name: tag-deployment-staging
-    if: (tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-rc$/) AND (branch = staging)
+    if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-rc$/
 
-  - name: tag-deployment-production
-    if: (tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)$/) AND (branch = production)
+  - name: tag-deployment-production-
+    if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)$/
 
+  - name: branch-deployment-lab
+    if: branch = master
+
+  - name: branch-deployment-staging
+    if: branch = staging
+
+  - name: branch-deployment-production
+    if: branch = production
 
 jobs:
   include:
+
+    - stage: build-test
+      name: Build
+      <<: *_build
+
+    # Tag deployment
     - stage: tag-deployment-lab
-      name: tag-deployment-lab
-      script: env
-    include:
-    - stage: tag-deployment-staging
-      name: tag-deployment-staging
-      script: env
-    include:
-    - stage: tag-deployment-production
-      name: tag-deployment-production
-      script: env
+      name: Deployment
+      <<: *_env-lab
+      <<: *_build
+      deploy:
+        <<: *_s3deployment
+        on:
+          tags: true
 
-
-
+    # Branch deployment
+    - stage: branch-deployment-lab
+      name: Deployment
+      <<: *_env-lab
+      <<: *_build
+      deploy:
+        <<: *_s3deployment
+        
