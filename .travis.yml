@@ -78,7 +78,7 @@ jobs:
   include:
 
     - stage: test
-      name: Run build
+      name: Build
       <<: *_build
 
     # Tag deployment
