@@ -48,8 +48,7 @@ _s3deployment: &_s3deployment
   #local_dir: dist
   #upload-dir: vip25
   provider: script
-  script: 
-    - env
+  script: env
 
 stages:
   # Default build
@@ -57,7 +56,7 @@ stages:
 
   # Condition stage
   - name: tag-deployment-lab
-    if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/
+    if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/ 
 
   - name: tag-deployment-staging
     if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-rc$/
@@ -88,6 +87,8 @@ jobs:
       <<: *_build
       deploy:
         <<: *_s3deployment
+        on:
+          tags: true
 
     # Branch deployment
     - stage: branch-deployment-lab
