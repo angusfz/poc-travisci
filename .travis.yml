@@ -77,7 +77,7 @@ stages:
 jobs:
   include:
 
-    - stage: test
+    - stage: build-test
       name: Build
       <<: *_build
 
