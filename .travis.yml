@@ -12,7 +12,7 @@ _build: &_build
     - echo "Phase install"
 
   script:
-    - echo "Phase script"
+    - echo ${$BUILD_ENV}
 
 _env-lab: &_env-lab
   env:
@@ -39,18 +39,23 @@ _env-production: &_env-production
     - S3_TARGET_BUCKET=${PRODUCTION_S3_TARGET_BUCKET}
 
 _s3deployment: &_s3deployment
-  provider: s3
-  region: ${AWS_DEFAULT_REGION}
-  access_key_id: ${AWS_ACCESS_KEY_ID}
-  secret_access_key: ${AWS_SECRET_ACCESS_KEY}
-  bucket: ${S3_TARGET_BUCKET}
-  cleanup: false
-  local_dir: dist
-  upload-dir: vip25
+  #provider: s3
+  #region: ${AWS_DEFAULT_REGION}
+  #access_key_id: ${AWS_ACCESS_KEY_ID}
+  #secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+  #bucket: ${S3_TARGET_BUCKET}
+  #cleanup: false
+  #local_dir: dist
+  #upload-dir: vip25
+  provider: script
+  script: 
+    - env
 
 stages:
+  # Default build
   - name: build-test
 
+  # Condition stage
   - name: tag-deployment-lab
     if: tag =~ /^(v|V)([0-9]*)\.([0-9]*)\.([0-9]*)-beta$/
 
@@ -71,7 +76,7 @@ stages:
 
 jobs:
   include:
-    # Default 
+
     - stage: test
       name: Run build
       <<: *_build
