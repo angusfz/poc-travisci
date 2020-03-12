@@ -1,5 +1,5 @@
 
-_build: &_build
+_build: &_buildd
   language: node_js
   node_js: "lts/*"
 
