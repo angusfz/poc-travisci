@@ -1,5 +1,5 @@
 
-_build: &_build
+_build: &_buildaa
   language: node_js
   node_js: "lts/*"
   git:
@@ -46,7 +46,7 @@ _s3deployment: &_s3deployment
   #bucket: ${S3_TARGET_BUCKET}
   #cleanup: false
   #local_dir: dist
-  #upload-dir: vip25
+  #upload-dir: vip25d
   provider: script
   script: env |sort
 
