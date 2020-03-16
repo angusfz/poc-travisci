@@ -1,5 +1,9 @@
 
+<<<<<<< HEAD
 _build: &_buildaa
+=======
+_build: &_buildd
+>>>>>>> 5f7e6c7... ll
   language: node_js
   node_js: "lts/*"
 
