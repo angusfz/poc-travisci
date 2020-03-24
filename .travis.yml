@@ -21,7 +21,7 @@ _build: &_build
     - yarn lint
     - yarn build:$BUILD_ENV
     - yarn test:unit
-    # - yarn test:e2e --headless
+    ## - yarn test:e2e --headless
 
 _env-lab: &_env-lab
   env:
