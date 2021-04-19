@@ -9,19 +9,20 @@ _build: &_build
   git:
     submodules: false
 
-  before_install:
-    - sed -i "s/git@github.com:/https:\/\/x-access-token:${GITHUB_ACCESS_TOKEN}@github.com\//g" .gitmodules
-    - git submodule update --init --recursive
-    - yarn
+  #before_install:
+    #- sed -i "s/git@github.com:/https:\/\/x-access-token:${GITHUB_ACCESS_TOKEN}@github.com\//g" .gitmodules
+    #- git submodule update --init --recursive
+    #- yarn
 
   install:
-    - cypress install
+    - echo "install"
 
   script:
-    - yarn lint
-    - yarn build:$BUILD_ENV
-    - yarn test:unit
+    #- yarn lint
+    #- yarn build:$BUILD_ENV
+    #- yarn test:unit
     ## - yarn test:e2e --headless
+    - env |sort
 
 _env-lab: &_env-lab
   env:
