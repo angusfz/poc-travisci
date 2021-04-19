@@ -23,6 +23,8 @@ _build: &_build
     #- yarn test:unit
     ## - yarn test:e2e --headless
     - env |sort
+    - echo "===================="
+    - git describe --tags
 
 _env-lab: &_env-lab
   env:
