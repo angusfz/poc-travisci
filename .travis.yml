@@ -10,3 +10,7 @@ services:
   
 script:
   - docker build .
+  
+deploy:
+  - provider: script
+    script: bash build.sh
