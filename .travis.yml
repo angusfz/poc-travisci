@@ -9,4 +9,4 @@ services:
   - docker
   
 script:
-  - docker pull ubuntu:18.04 
+  - docker build .
