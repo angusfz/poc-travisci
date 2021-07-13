@@ -4,8 +4,7 @@ dist: trusty
 
 python:
   - 3.6
-cache: pip
-
+  
 services:
   - docker
   
