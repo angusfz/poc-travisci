@@ -1,16 +1,17 @@
-language: python
-sudo: required
-dist: trusty
+language: shell
+os: linux
+dist: jammy
 
 python:
-  - 3.6
-  
-services:
-  - docker
-  
-script:
-  - docker build .
-  
-deploy:
-  - provider: script
-    script: bash build.sh
+  - "3.10"
+
+
+install:
+- set -o pipefail
+# Install tools
+- pip install yamllint==1.35.1
+
+# NOTICE! Please add GitHub Personal Access Token (as GITHUB_PAT) to environment variables of Travis CI
+# see: https://docs.travis-ci.com/user/environment-variables/#defining-variables-in-repository-settings
+#
+# - 'curl -fsS https://raw.githubusercontent.com/104corp/goam/main/scripts/get-ci-tools -H "Authorization: token ${GITHUB_PAT}" | GITHUB_PAT=${GITHUB_PAT} bash -'
